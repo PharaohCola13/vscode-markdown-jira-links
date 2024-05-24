@@ -15,8 +15,7 @@ export async function activate(context: ExtensionContext) {
     migrate();
 
     const jiraTicketLinkProvider = new JiraTicketLinkProvider();
-    context.subscriptions.push(languages.registerDocumentLinkProvider({ scheme: 'file', language: 'markdown' }, jiraTicketLinkProvider));
-    context.subscriptions.push(languages.registerDocumentLinkProvider({ scheme: 'untitled', language: 'markdown' }, jiraTicketLinkProvider));
+    context.subscriptions.push(languages.registerDocumentLinkProvider({ scheme: 'file', pattern: '**/outline.txt' }, jiraTicketLinkProvider));
 
     jiraDecorator = window.createTextEditorDecorationType({
         before: {
@@ -106,7 +105,8 @@ class JiraTicketLinkProvider implements DocumentLinkProvider {
             let match: RegExpExecArray | null;
             while ((match = regex.exec(text)) !== null) {
                 const range = new Range(document.positionAt(match.index), document.positionAt(match.index + match[0].length));
-                let target = Uri.parse(url + 'browse/' + match[0]);
+                let matchRegex = RegExp('\\d+', 'g').exec(match[0]);//match[0].substring(code.length, -1);
+                let target = Uri.parse(url + '-' + matchRegex);
                 links.push(new DocumentLink(range, target));
             }
         }

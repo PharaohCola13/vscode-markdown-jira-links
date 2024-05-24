@@ -5,5 +5,11 @@
     },
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results
-    }
+    },
+    "markDownJiraLinks.codesToUrls": [
+        {
+            "code": "Jira@COLAPHD",
+            "url": "https://pharaohcola13-phd.atlassian.net/browse/COLAPHD"
+        }
+    ]
 }
